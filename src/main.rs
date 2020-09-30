@@ -65,12 +65,21 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                         .current_dir(dir_entry.path())
                         .args(&["remote", "update"])
                         .output();
+
                     match output {
                         Ok(output) => {
                             if output.status.success() {
-                                println!("{:?} - Success!", dir_entry.path());
+                                println!(
+                                    "{:?} - Success: {}",
+                                    dir_entry.path(),
+                                    String::from_utf8_lossy(&output.stdout).trim()
+                                );
                             } else {
-                                println!("{:?} - Failure: {:?}", dir_entry.path(), output.stderr);
+                                println!(
+                                    "{:?} - Failure: {:?}",
+                                    dir_entry.path(),
+                                    String::from_utf8_lossy(&output.stderr).trim()
+                                );
                             }
                         }
                         Err(output) => {
